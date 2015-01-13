@@ -6,16 +6,25 @@ stillGuessing = true
 guesses = [] #keep a history of guesses
 
 # methods ------------------------------
+
+# generate a random value between 1 and maxValue using rand
 def generateTargetNumber(maxValue)
   rand(maxValue) + 1
 end
 
-def evaluate( guesses, randomNumber )
+#generate a random value between 1 and maxValue using sample
+def alternateGenerateTargetNumber(maxValue)
+  [*1..maxValue].sample #woooooo buddy that is slick-- remember this notation, self
+end
+
+def evaluate( guesses, randomNumber, maxValue )
 
   noCorrectGuess = true
   responseString = ""
 
-  if( guesses[-1] < randomNumber )
+  if( guesses[-1] < 1 || guesses[-1] > maxValue)
+    responseString += "Your guess should be between 1 and #{maxValue}"
+  elsif( guesses[-1] < randomNumber )
     responseString += "Your guess is a little low"
   elsif( guesses[-1] > randomNumber)
     responseString += "Your guess is a little high"
@@ -29,8 +38,8 @@ def evaluate( guesses, randomNumber )
       responseString += ", and you've already guessed a higher number that was too low. Pull it together!"
     elsif i > randomNumber && i < guesses[-1] && responseString == "Your guess is a little high"
       responseString += ", and you've already guessed a lower number that was too high. Pull it together!"
-    elsif i == guesses[-1]
-      responseString += " (P.S. You already guessed that!)" #if you guess the same number more than twice, it will keep adding this substring
+    elsif i == guesses[-1] && !responseString.include?("You already guessed that")
+      responseString += " (P.S. You already guessed that!)"
     end
   end
 
@@ -40,7 +49,7 @@ def evaluate( guesses, randomNumber )
 end
 
 # main code ------------------------------
-randomNumber = generateTargetNumber(maxValue)
+randomNumber = alternateGenerateTargetNumber(maxValue)
 
 puts "Guess a number between 1 and " + maxValue.to_s
 
@@ -52,7 +61,7 @@ while( (guessesLeft > 0) && stillGuessing )
 
   puts "You guessed " + guess.to_s
 
-  stillGuessing = evaluate(guesses,randomNumber)
+  stillGuessing = evaluate(guesses,randomNumber,maxValue)
 
   guessesLeft -= 1
 end
