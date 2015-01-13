@@ -1,7 +1,7 @@
 
 # initial set up ------------------------
 maxValue = 100 #allows to easily reset the range of guesses
-guessesLeft = 10
+guessesLeft = 5
 stillGuessing = true
 guesses = [] #keep a history of guesses
 
